@@ -24,7 +24,7 @@ It:
 ## 📋 Requirements
 - **Windows 10/11**
 - [**AutoHotkey v2**](https://www.autohotkey.com/)
-- **CapFrameX** (portable or installed)
+- **CapFrameX** (portable or installed) https://www.capframex.com/
 - **Steam** with CS2 installed
 - **FPS Benchmark Workshop Map**:
   - [CS2 FPS Benchmark Map](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604)
