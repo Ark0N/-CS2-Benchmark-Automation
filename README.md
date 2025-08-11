@@ -82,7 +82,9 @@ From the **Capture Logger** tab:
 | Run history               | OFF        |
 | Aggregation of run history| OFF        |
 
-> **Note:** Capture time in CapFrameX (100s) should be slightly shorter than the script’s total benchmark duration (125s) to ensure proper shutdown.
+
+<img width="556" height="181" alt="image" src="https://github.com/user-attachments/assets/e7ed1244-d3c0-4343-83c7-d8a1b5b8c32e" />
+
 
 ---
 
