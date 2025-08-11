@@ -1,4 +1,4 @@
-⚡ 1-Click CS2 Benchmark Automation with CapFrameX
+🎯⚡ 1-Click CS2 Benchmark Automation 📈🖥 (with CapFrameX)
 
 Run **professional-grade CS2 benchmarks** with **true 1% lows** and precise CPU/GPU usage metrics — all in just **one click**.
 
