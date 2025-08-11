@@ -3,6 +3,10 @@
 Run **professional-grade CS2 benchmarks** with **true 1% lows** and precise CPU/GPU usage metrics — all in just **one click**.
 
 This project bundles **CapFrameX** and **AutoHotkey** into a single, ready-to-run package.  
+
+Just install the - **CS2 FPS Benchmark Workshop Map**:  
+  [Download Here](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604) (must be subscribed)
+
 No complicated setup, no manual steps — just **click once to set up**, and **click once to benchmark**.
 
 <img width="221" height="143" alt="image" src="https://github.com/user-attachments/assets/8349e1d1-1bc2-4c69-a17c-961a1d0e3771" />
