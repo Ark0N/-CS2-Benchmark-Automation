@@ -4,6 +4,8 @@ Run **professional-grade CS2 benchmarks** with **true 1% lows** and precise CPU/
 
 This project bundles **CapFrameX** and **AutoHotkey** into a single, ready-to-run package.  
 
+<img width="895" height="532" alt="image" src="https://github.com/user-attachments/assets/0beea05f-334c-467b-a552-138e9d71fe11" />
+
 ## 🚀 Why This Tool?
 
 Benchmarking CS2 by hand is frustrating — launch the game, try to hit the capture hotkey at just the right moment and then wonder if your results are even comparable. Most of the time, they aren’t.
