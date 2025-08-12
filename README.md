@@ -61,7 +61,7 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 
 ## ▶ Running a Benchmark
 
-1. Run **`Run_Benchmark.bat`** for a direct run or use the `GUI-Lauincher.bat`
+1. Run **`Run_Benchmark.bat`** for a direct run or use the `GUI-Launcher.bat`
 2. Sit back:
    - CapFrameX launches in the background.
    - CS2 starts, loads the workshop FPS Benchmark map.
