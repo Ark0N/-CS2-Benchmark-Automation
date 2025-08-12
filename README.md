@@ -49,6 +49,8 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 
 The "Run Setup First" (setup.ahk) automatically detects your Steam installation directory and allows you to select the Steam account you want to use for the Benchmarks.
 
+<img width="659" height="307" alt="image" src="https://github.com/user-attachments/assets/5e9cf31f-847f-4936-9fe9-b3ebdfdf0b1f" />
+
 Please ensure that the CS2 Dust2 Benchmark Workshop map is subscribed to on the selected account.
 
 The script retrieves the key you have bound to ToggleConsole and records this information—along with your Steam installation directory and Steam User ID into the main benchmarking script, AutoHotkey64.ahk.
