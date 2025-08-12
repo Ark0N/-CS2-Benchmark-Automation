@@ -19,11 +19,9 @@ GUI-Launcher.bat from the CS2-Benchmark-Bundle.zip
 
 ## 🚀 Why This Tool?
 
-Manual CS2 benchmarking is a nightmare — start the game, fumble for your capture hotkey, guess the right moment, hope you stop at the same time… and pray the results are comparable. Spoiler: they’re usually not.
+Benchmarking CS2 by hand is frustrating — launch the game, try to hit the capture hotkey at just the right moment and then wonder if your results are even comparable. Most of the time, they aren’t.
 
-This tool fixes all of that.
-
-This script **does it all automatically**:
+This tool makes the process consistent, repeatable, and effortless:
 
 1. **Timing** – Capture starts at exactly the same moment every run, down to the millisecond.
 2. **Truly repeatable** – Change a bios setting, driver, overclock your GPU — then re-run knowing the test conditions are identical.
