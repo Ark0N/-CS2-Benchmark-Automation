@@ -1,4 +1,4 @@
-🎯⚡ 1-Click CS2 Benchmark Automation 📈🖥 (with CapFrameX)
+ddddddddddddddddddddddddddddddddddddddddddddddddddddddddd🎯⚡ 1-Click CS2 Benchmark Automation 📈🖥 (with CapFrameX)
 
 Run **professional-grade CS2 benchmarks** with **true 1% lows** and precise CPU/GPU usage metrics — all in just **one click**.
 
@@ -9,6 +9,7 @@ Just install the - **CS2 FPS Benchmark Workshop Map**:
 
 No complicated setup, no manual steps — just **click once to set up**, and **click once to benchmark**. 
 
+GUI-Launcher.bat from the CS2-Benchmark-Bundle.zip
 <img width="895" height="532" alt="image" src="https://github.com/user-attachments/assets/0beea05f-334c-467b-a552-138e9d71fe11" />
 
 
