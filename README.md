@@ -40,8 +40,8 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 ## ✨ Key Features
 
 - **📦 All-in-One Bundle** – Includes CapFrameX and AutoHotkey scripts, no hunting for tools.
-- **⚡ 1-Click Setup** – Just run `Setup_first.bat` once and you’re ready to go.
-- **▶ 1-Click Benchmark** – Run `Run_Benchmark.bat` and everything is automated.
+- **⚡ 1-Click GUI** – Just run `GUI-Launcher.bat` once and you’re ready to go.
+- **▶ 1-Click Benchmark** – Run `Run_Benchmark.bat` and everything is automated. 
 - **🎯 Professional Data Quality** – Get real **1% lows**, **frametime analysis**, CPU/GPU usage charts.
 - **🔄 Auto-Restart Capture Tool** – Ensures CapFrameX starts fresh every time.
 - **🔊 Audio Cues** – Double beep signals when the benchmark capture starts.
@@ -52,7 +52,7 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 ## 🛠 Setup — Fast & Easy
 
 1. **Download & Extract** this bundle anywhere on your PC.
-2. **Run `Setup_first.bat`** — it will configure everything in one go.
+2. **Run `GUI-Lauincher.bat`** — it will configure everything in one go.
 3. That’s it! You’re now ready to benchmark.
 
 > No manual path editing or tool installs — everything you need is included.
@@ -61,14 +61,13 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 
 ## ▶ Running a Benchmark
 
-1. Close any running CapFrameX instances (the script will also do this for you).
-2. Run **`Run_Benchmark.bat`**.
-3. Sit back:
+1. Run **`Run_Benchmark.bat`** for a direct run or use the `GUI-Lauincher.bat`
+2. Sit back:
    - CapFrameX launches in the background.
    - CS2 starts, loads the workshop FPS Benchmark map.
-   - After a short delay, capture begins (listen for the beeps).
+   - 6 Seconds after the console is closed, the capture begins (listen for the beeps).
    - The script quits CS2 when finished.
-4. Open CapFrameX to review your data — full graphs, frametime plots, averages, **1% lows**, CPU/GPU metrics.
+3. Open CapFrameX to review your data — full graphs, frametime plots, averages, **1% lows**, CPU/GPU metrics.
 
 ---
 
@@ -81,7 +80,7 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 
 ---
 
-## 🎛 Recommended CapFrameX Settings
+## 🎛 Important CapFrameX Settings (these settings are preconfigured within the CS2-Benchmark-Bundle.zip)
 
 **Capture Logger Tab:**
 | Setting                   | Value  |
@@ -107,6 +106,9 @@ cs2WindowWaitSeconds := 120     ; Max wait for CS2 to open
 mapStartDelayMs      := 6000    ; Delay before starting capture
 benchmarkDurationMs  := 125000  ; Duration before quitting CS2
 
+A CapFrameX Benchmark of the CS2 Dust2 Workshop Map
+
+<img width="2213" height="1290" alt="image" src="https://github.com/user-attachments/assets/10d8e523-2502-48a3-bb0e-a54258ab1e43" />
 
 
 
