@@ -53,9 +53,16 @@ The script retrieves the key you have bound to ToggleConsole and records this in
 
 ## 🛠 Setup — Fast & Easy
 
-1. **Download & Extract** this bundle anywhere on your PC.
-2. **Run `GUI-Lauincher.bat`** — it will configure everything in one go.
-3. That’s it! You’re now ready to benchmark.
+1. Just install the - **CS2 FPS Benchmark Workshop Map**:  
+  [Download Here](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604) (must be subscribed)
+
+2. **Download & Extract** this bundle anywhere on your PC. https://github.com/Ark0N/-CS2-Benchmark-Automation/blob/main/CS2-Benchmark-Bundle.zip 
+  
+3. In Steam Settings disable "Ask which account to use each time Steam start"
+
+4. **Run `GUI-Lauincher.bat`** — it will configure everything in one go 
+<img width="895" height="532" alt="image" src="https://github.com/user-attachments/assets/0beea05f-334c-467b-a552-138e9d71fe11" />
+
 
 > No manual path editing or tool installs — everything you need is included.
 
@@ -77,6 +84,7 @@ The script retrieves the key you have bound to ToggleConsole and records this in
 
 - **Windows 10/11**
 - **Steam** with CS2 installed
+- In Steam Settings disable "Ask which account to use each time Steam start"
 - **CS2 FPS Benchmark Workshop Map**:  
   [Download Here](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604) (must be subscribed)
 
