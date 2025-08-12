@@ -23,14 +23,16 @@ The script retrieves the key you have bound to ToggleConsole and records this in
 
 ## 🚀 Why This Tool?
 
-If you’ve ever tried to benchmark CS2 manually, you know the pain — launching tools separately, starting captures at the right moment, stopping them, and cleaning up afterwards.
+Manual CS2 benchmarking is a nightmare — start the game, fumble for your capture hotkey, guess the right moment, hope you stop at the same time… and pray the results are comparable. Spoiler: they’re usually not.
+
+This tool fixes all of that.
 
 This script **does it all automatically**:
 
-1. **Restarts CapFrameX** for a clean capture environment.
-2. **Launches CS2** and loads the FPS Benchmark Workshop map.
-3. **Starts the benchmark capture** at the perfect time — with audible beeps.
-4. **Collects accurate data** for average FPS, 1% lows, CPU/GPU usage, frametimes.
+1. **Timing** – Capture starts at exactly the same moment every run, down to the millisecond.
+2. **Truly repeatable** – Change a bios setting, driver, overclock your GPU — then re-run knowing the test conditions are identical.
+3. **Hands-free workflow** – It launches CapFrameX fresh, starts CS2, runs the benchmark, captures with audible beeps, collects the data, and closes the game automatically.
+4. **Scientific accuracy** – With precise timing and CapFrameX’s trusted metrics, your results are consistent, comparable, and 100% reproducible.
 5. **Exits CS2** automatically when done.
 
 With CapFrameX handling the metrics, you get **real, trustworthy numbers** — not “fake” averages.
@@ -43,8 +45,6 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 - **⚡ 1-Click GUI** – Just run `GUI-Launcher.bat` once and you’re ready to go.
 - **▶ 1-Click Benchmark** – Run `Run_Benchmark.bat` and everything is automated. 
 - **🎯 Professional Data Quality** – Get real **1% lows**, **frametime analysis**, CPU/GPU usage charts.
-- **🔄 Auto-Restart Capture Tool** – Ensures CapFrameX starts fresh every time.
-- **🔊 Audio Cues** – Double beep signals when the benchmark capture starts.
 - **🛠 Fully Adjustable** – All timings and hotkeys can be tweaked in the `.ahk` scripts.
 
 ---
