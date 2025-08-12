@@ -7,9 +7,10 @@ This project bundles **CapFrameX** and **AutoHotkey** into a single, ready-to-ru
 Just install the - **CS2 FPS Benchmark Workshop Map**:  
   [Download Here](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604) (must be subscribed)
 
-No complicated setup, no manual steps — just **click once to set up**, and **click once to benchmark**.
+No complicated setup, no manual steps — just **click once to set up**, and **click once to benchmark**. 
 
-<img width="221" height="143" alt="image" src="https://github.com/user-attachments/assets/8349e1d1-1bc2-4c69-a17c-961a1d0e3771" />
+<img width="895" height="532" alt="image" src="https://github.com/user-attachments/assets/0beea05f-334c-467b-a552-138e9d71fe11" />
+
 
 ---
 
