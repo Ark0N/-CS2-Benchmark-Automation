@@ -38,15 +38,16 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 - **📦 All-in-One Bundle** – Includes CapFrameX and AutoHotkey scripts, no hunting for tools.
 - **⚡ 1-Click GUI** – Just run `GUI-Launcher.bat` once and you’re ready to go.
 - **▶ 1-Click Benchmark** – Run `Run_Benchmark.bat` and everything is automated.
-- **Optional 🛠 Custom cs2_video file** Always use the same CS2 Video Settings for consistent Restults, put your cs2_video.txt settings file into the "cs2_video" folder. 
 - **🎯 Professional Data Quality** – Get real **1% lows**, **frametime analysis**, CPU/GPU usage charts.
 - **🛠 Fully Adjustable** – All timings and hotkeys can be tweaked in the `.ahk` scripts.
+
+- **Optional 🛠 Custom cs2_video file** Always use the same CS2 Video Settings for consistent Restults, put your cs2_video.txt settings file into the "cs2_video" folder.
 
 The setup.ahk automatically detects your Steam installation directory and allows you to select the Steam account you want to use.
 
 Please ensure that the CS2 Dust2 Benchmark Workshop map is subscribed to on the selected account.
 
-The script retrieves the key you have bound to ToggleConsole and records this information—along with your Steam installation directory and Steam user ID—into the main benchmarking script, AutoHotkey64.ahk.
+The script retrieves the key you have bound to ToggleConsole and records this information—along with your Steam installation directory and Steam User ID into the main benchmarking script, AutoHotkey64.ahk.
 
 ---
 
