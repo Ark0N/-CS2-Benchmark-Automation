@@ -160,6 +160,3 @@ Log("Sent capture hotkey")
 Sleep benchmarkDurationMs
 SendConsoleCommand("quit")
 Log("Sent quit; script end")
-consoleKey := "{F10}"
-
-steamUserId := "312103617"
