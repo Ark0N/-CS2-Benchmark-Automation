@@ -12,7 +12,9 @@ No complicated setup, no manual steps — just **click once to set up**, and **c
 GUI-Launcher.bat from the CS2-Benchmark-Bundle.zip
 <img width="895" height="532" alt="image" src="https://github.com/user-attachments/assets/0beea05f-334c-467b-a552-138e9d71fe11" />
 
-
+The setup.ahk automatically detects your Steam installation directory and allows you to select the Steam account you want to use.
+Please ensure that the CS2 Dust2 Benchmark Workshop map is subscribed to on the selected account.
+The script retrieves the key you have bound to ToggleConsole and records this information—along with your Steam installation directory and Steam user ID—into the main benchmarking script, AutoHotkey64.ahk.
 ---
 
 ## 🚀 Why This Tool?
