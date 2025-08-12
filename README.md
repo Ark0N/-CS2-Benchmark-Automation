@@ -43,11 +43,6 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 
 - **Optional 🛠 Custom cs2_video file** Always use the same CS2 Video Settings for consistent Restults, put your cs2_video.txt settings file into the "cs2_video" folder.
 
-The setup.ahk automatically detects your Steam installation directory and allows you to select the Steam account you want to use.
-
-Please ensure that the CS2 Dust2 Benchmark Workshop map is subscribed to on the selected account.
-
-The script retrieves the key you have bound to ToggleConsole and records this information—along with your Steam installation directory and Steam User ID into the main benchmarking script, AutoHotkey64.ahk.
 
 ---
 
@@ -63,6 +58,11 @@ The script retrieves the key you have bound to ToggleConsole and records this in
 4. **Run `GUI-Lauincher.bat`** — it will configure everything in one go 
 <img width="895" height="532" alt="image" src="https://github.com/user-attachments/assets/0beea05f-334c-467b-a552-138e9d71fe11" />
 
+The "Run Setup First" (setup.ahk) automatically detects your Steam installation directory and allows you to select the Steam account you want to use for the Benchmarks.
+
+Please ensure that the CS2 Dust2 Benchmark Workshop map is subscribed to on the selected account.
+
+The script retrieves the key you have bound to ToggleConsole and records this information—along with your Steam installation directory and Steam User ID into the main benchmarking script, AutoHotkey64.ahk.
 
 > No manual path editing or tool installs — everything you need is included.
 
