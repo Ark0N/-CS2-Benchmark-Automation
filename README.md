@@ -6,6 +6,8 @@ This project bundles **CapFrameX** and **AutoHotkey** into a single, ready-to-ru
 
 Just install the - **CS2 FPS Benchmark Workshop Map**:  
   [Download Here](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604) (must be subscribed)
+  
+In Steam Settings disable "Ask which account to use each time Steam start"
 
 No complicated setup, no manual steps — just **click once to set up**, and **click once to benchmark**. 
 
