@@ -49,10 +49,11 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 3. In Steam Settings disable "Ask which account to use each time Steam start"
 
 4. **Run `GUI-Lauincher.bat`** — it will configure everything in one go
-<img width="892" height="727" alt="image" src="https://github.com/user-attachments/assets/956eb6b9-85f6-4763-942c-30dc106447b3" />
+<img width="960" height="745" alt="image" src="https://github.com/user-attachments/assets/d5a47559-b9e3-4ce9-bb25-64f420bb37e2" />
 
 
-   The "Run Setup First" (setup.ahk) automatically detects your Steam installation directory and allows you to select the Steam account you want to use for the Benchmarks.
+
+   The "CS2 Video Setup"  automatically detects your Steam installation directory and allows you to select the Steam account.
 
     <img width="659" height="307" alt="image" src="https://github.com/user-attachments/assets/5e9cf31f-847f-4936-9fe9-b3ebdfdf0b1f" />
 
