@@ -2,7 +2,7 @@
 setlocal
 
 
-set SRC_CFG=Configuration\AppSettings.json
+set SRC_CFG=CapFrameX_beta1.7.6.portable\Configuration\AppSettings.json
 
 
 set TARGET_DIR=%APPDATA%\CapFrameX\Configuration
@@ -31,4 +31,4 @@ if errorlevel 1 (
 )
 
 
-start "" "CapFrameX.exe"
+start "" "CapFrameX_beta1.7.6.portable\CapFrameX.exe"
