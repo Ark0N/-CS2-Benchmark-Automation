@@ -41,7 +41,7 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 1. Just install the - **CS2 FPS Benchmark Workshop Map**:  
    [Download Here](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604) (must be subscribed)
 
-2. **Download & Extract** this bundle anywhere on your PC. https://github.com/Ark0N/-CS2-Benchmark-Automation/archive/refs/heads/main.zip
+2. **Download & Extract** this bundle anywhere on your PC. [https://github.com/Ark0N/-CS2-Benchmark-Automation/archive/refs/heads/main.zip](https://github.com/Ark0N/-CS2-Benchmark-Automation/archive/refs/heads/main.zip)
 
 3. In Steam Settings disable "Ask which account to use each time Steam start"
 
