@@ -1,4 +1,4 @@
-﻿; ================================
+; ================================
 ; CS2 + CapFrameX Benchmark Runner (AutoHotkey v2)
 ; Closes any running CapFrameX -> relaunches CapFrameX from the bundle with the settings for CS2 Benchmarking
 ; Starts CS2 -> runs workshop map over console -> closes Console -> 6 Seconds later -> starts CapFrameX Capture -> Let the run finish and then quits CS2
@@ -26,7 +26,7 @@ EnsureAdminAndRerun() {
 
 ; ---------- Settings ----------
 ; Make CapFrameX path relative to this script folder
-capframexExe := A_ScriptDir "\CapFrameX_beta1.7.6.portable\CapFrameX.exe"
+capframexExe := A_ScriptDir "\CapFrameX_beta1.7.6.portable\Start_CapFrameX.bat"
 steamExe     := "C:\Program Files (x86)\Steam\steam.exe"
 workshopId   := "3240880604"
 steamUserId := "1337"
@@ -160,4 +160,3 @@ Log("Sent capture hotkey")
 Sleep benchmarkDurationMs
 SendConsoleCommand("quit")
 Log("Sent quit; script end")
-
