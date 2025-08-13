@@ -1,5 +1,5 @@
 ; ================================
-; CS2 + CapFrameX Benchmark Runner (AutoHotkey v2)
+; CS2 + CapFrameX Benchmark Runner (AutoHotkey v2) v2.0
 ; Closes any running CapFrameX -> relaunches CapFrameX from the bundle with the settings for CS2 Benchmarking
 ; Starts CS2 -> runs workshop map over console -> closes Console -> 6 Seconds later -> starts CapFrameX Capture -> Let the run finish and then quits CS2
 ; Notes: disable "Ask which account to use each time Steam start"
@@ -30,15 +30,16 @@ capframexExe := A_ScriptDir "\CapFrameX_beta1.7.6.portable\Start_CapFrameX.bat"
 steamExe     := "C:\Program Files (x86)\Steam\steam.exe"
 workshopId   := "3240880604"
 steamUserId := "1337"
+; only needed to copy files there like cs2 video settings
 
 cs2WindowWaitSeconds := 120
 postWindowSettleMs   := 15000
-consoleKey := "{F10}"
 startHotkeyToSend := "{F5}"
 
 closeConsoleDelayMs := 3000
 mapStartDelayMs     := 6000
 benchmarkDurationMs := 125000
+
 
 ; ---------- Helpers ----------
 ErrBox(txt) {
@@ -46,21 +47,23 @@ ErrBox(txt) {
     ExitApp
 }
 
-SendConsoleCommand(cmd) {
-    global consoleKey
+; Type directly into an already-open console and press Enter
+TypeInConsole(cmd) {
     WinActivate "Counter-Strike 2"
     WinWaitActive("Counter-Strike 2",, 2)
     Sleep 120
-    Send "{Blind}{Escape}"
-    Sleep 120
-    Send("{Blind}" . consoleKey)
-    Sleep 200
+    ; Console is already open because of: +con_enable 1
     Send "{Text}" cmd
     Sleep 80
     Send "{Enter}"
 }
 
+
 ; --- 1b) Prepare cs2_video config BEFORE launching Steam/CS2 ---
+; This step is OPTIONAL. Set doPrepareVideoConfig := true if you want to run it.
+doPrepareVideoConfig := false
+
+if (doPrepareVideoConfig) {
 sourceVideo := A_ScriptDir "\cs2_video\cs2_video.txt"
 cfgFolder   := "C:\Program Files (x86)\Steam\userdata\" steamUserId "\730\local\cfg"
 targetVideo := cfgFolder "\cs2_video.txt"
@@ -107,6 +110,12 @@ if !FileExist(sourceVideo) {
     }
 }
 
+}
+
+
+
+
+
 ; --- CapFrameX: close if already running, then launch fresh ---
 if !FileExist(capframexExe)
     ErrBox("CapFrameX not found at:`n" capframexExe)
@@ -131,21 +140,22 @@ Sleep 1200
 ; 3) Launch CS2
 if !FileExist(steamExe)
     ErrBox("Steam not found at:`n" steamExe)
-Run('"' steamExe '" -applaunch 730')
+Run('"' steamExe '" -applaunch 730 +con_enable 1')
 Log("Launched Steam/CS2")
 
 ; 4) Wait for CS2 window & settle
 if !WinWait("Counter-Strike 2", , cs2WindowWaitSeconds) {
     Log("CS2 window not detected within timeout")
-    MsgBox "Couldn’t detect the CS2 window within ~" cs2WindowWaitSeconds " seconds.", "Notice"
+    MsgBox "Couldn't detect the CS2 window within ~" cs2WindowWaitSeconds " seconds.", "Notice"
 }
 Sleep postWindowSettleMs
 Log("Window settled")
 
 ; 5) Run workshop map
-SendConsoleCommand("map_workshop " workshopId)
+
+TypeInConsole("map_workshop " workshopId)
 Sleep closeConsoleDelayMs
-Send "{Escape}"
+Send "{Escape}" ; close console so the benchmark view is clean
 Log("Sent map_workshop + closed console")
 
 ; 6) Start capture after map loads
@@ -157,6 +167,10 @@ Send startHotkeyToSend
 Log("Sent capture hotkey")
 
 ; 7) Wait then quit CS2
+; --- 6) Wait N seconds, then quit CS2 ---
 Sleep benchmarkDurationMs
-SendConsoleCommand("quit")
-Log("Sent quit; script end")
+; The console will re-appear at the end; type quit to exit.
+TypeInConsole("quit")
+Log("Sent quit command")
+
+Log("Script completed successfully")
