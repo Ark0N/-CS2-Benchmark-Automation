@@ -27,7 +27,7 @@ EnsureAdminAndRerun() {
 ; ---------- Settings ----------
 ; Make CapFrameX path relative to this script folder
 capframexExe := A_ScriptDir "\CapFrameX_beta1.7.6.portable\Start_CapFrameX.bat"
-steamExe     := "C:\Program Files (x86)\Steam\steam.exe"
+steamExe := ResolveSteamExe()
 workshopId   := "3240880604"
 steamUserId := "1337"
 ; only needed to copy files there like cs2 video settings
@@ -47,12 +47,61 @@ ErrBox(txt) {
     ExitApp
 }
 
+; resolve Steam installation folder
+steamExe := ResolveSteamExe()
+
+ResolveSteamExe() {
+    exe := SteamExeFromRegistry()
+    if exe
+        return exe
+
+    ; Fallback: default folder
+    defaultExe := A_Is64bitOS
+        ? "C:\Program Files (x86)\Steam\steam.exe"
+        : "C:\Program Files\Steam\steam.exe"
+    return FileExist(defaultExe) ? defaultExe : ""
+}
+
+SteamExeFromRegistry() {
+    ; Prefer HKCU, then HKLM (WOW6432Node first on 64-bit)
+    regCandidates := [
+        ["HKCU\Software\Valve\Steam", "SteamExe"],    ; full path
+        ["HKCU\Software\Valve\Steam", "SteamPath"],   ; folder
+        ["HKLM\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath"],
+        ["HKLM\SOFTWARE\Valve\Steam", "InstallPath"]
+    ]
+
+    for pair in regCandidates {
+        try {
+            val := RegRead(pair[1], pair[2])
+            exe := NormalizeSteamPathToExe(val)
+            if exe && FileExist(exe)
+                return exe
+        }
+    }
+    return ""
+}
+
+NormalizeSteamPathToExe(val) {
+    if !val
+        return ""
+    ; strip quotes and normalize
+    val := Trim(val, ' "' . "`t`r`n")
+    val := StrReplace(val, "/", "\")
+    val := RTrim(val, "\")
+
+    ; If the value is already the exe, keep it; otherwise append \steam.exe
+    if InStr(StrLower(val), "steam.exe")
+        return val
+    return val "\steam.exe"
+}
+
 ; Type directly into an already-open console and press Enter
 TypeInConsole(cmd) {
     WinActivate "Counter-Strike 2"
     WinWaitActive("Counter-Strike 2",, 2)
     Sleep 120
-    ; Console is already open because of: +con_enable 1
+    ; Console is already open because of: +con_enable 1 -console +toggleconsole
     Send "{Text}" cmd
     Sleep 80
     Send "{Enter}"
@@ -65,7 +114,7 @@ doPrepareVideoConfig := false
 
 if (doPrepareVideoConfig) {
 sourceVideo := A_ScriptDir "\cs2_video\cs2_video.txt"
-cfgFolder   := "C:\Program Files (x86)\Steam\userdata\" steamUserId "\730\local\cfg"
+cfgFolder   := "C:\Program Files (x86)\Steam2\userdata\" steamUserId "\730\local\cfg"
 targetVideo := cfgFolder "\cs2_video.txt"
 
 Log("cs2_video copy: source=" sourceVideo)
