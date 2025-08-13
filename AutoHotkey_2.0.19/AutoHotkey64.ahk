@@ -6,24 +6,6 @@
 ; If there is a "cs2_video.txt" CS2 Video Configuration file in the "cs2_video" folder it will copy that to your Steam Account and backup the existing cs2_video.txt
 ; ================================
 
-; ---------- Small Logger ----------
-Log(msg) {
-    try FileAppend(FormatTime(, "yyyy-MM-dd HH:mm:ss") " | " msg "`n", A_Temp "\cs2_bench.log", "UTF-8")
-}
-
-; ---------- Elevation Helper ----------
-EnsureAdminAndRerun() {
-    if !A_IsAdmin {
-        Log("Not admin; relaunching elevated…")
-        try {
-            Run('*RunAs "' A_AhkPath '" "' A_ScriptFullPath '"')
-        } catch as e {
-            MsgBox "Failed to request elevation:`n" e.Message, "Error", "Iconx"
-        }
-        ExitApp
-    }
-}
-
 ; ---------- Settings ----------
 ; Make CapFrameX path relative to this script folder
 capframexExe := A_ScriptDir "\CapFrameX_beta1.7.6.portable\Start_CapFrameX.bat"
@@ -40,6 +22,18 @@ closeConsoleDelayMs := 3000
 mapStartDelayMs     := 6000
 benchmarkDurationMs := 125000
 
+; ---------- Elevation Helper ----------
+EnsureAdminAndRerun() {
+    if !A_IsAdmin {
+        Log("Not admin; relaunching elevated…")
+        try {
+            Run('*RunAs "' A_AhkPath '" "' A_ScriptFullPath '"')
+        } catch as e {
+            MsgBox "Failed to request elevation:`n" e.Message, "Error", "Iconx"
+        }
+        ExitApp
+    }
+}
 
 ; ---------- Helpers ----------
 ErrBox(txt) {
@@ -161,10 +155,6 @@ if !FileExist(sourceVideo) {
 
 }
 
-
-
-
-
 ; --- CapFrameX: close if already running, then launch fresh ---
 if !FileExist(capframexExe)
     ErrBox("CapFrameX not found at:`n" capframexExe)
@@ -183,14 +173,12 @@ if (hwnd := WinExist("ahk_exe " capframexExeName)) {
 }
 
 Run('"' capframexExe '"')
-Log("Launched CapFrameX")
 Sleep 1200
 
 ; 3) Launch CS2
 if !FileExist(steamExe)
     ErrBox("Steam not found at:`n" steamExe)
 Run('"' steamExe '" -applaunch 730 +con_enable 1')
-Log("Launched Steam/CS2")
 
 ; 4) Wait for CS2 window & settle
 if !WinWait("Counter-Strike 2", , cs2WindowWaitSeconds) {
@@ -198,14 +186,12 @@ if !WinWait("Counter-Strike 2", , cs2WindowWaitSeconds) {
     MsgBox "Couldn't detect the CS2 window within ~" cs2WindowWaitSeconds " seconds.", "Notice"
 }
 Sleep postWindowSettleMs
-Log("Window settled")
 
 ; 5) Run workshop map
 
 TypeInConsole("map_workshop " workshopId)
 Sleep closeConsoleDelayMs
 Send "{Escape}" ; close console so the benchmark view is clean
-Log("Sent map_workshop + closed console")
 
 ; 6) Start capture after map loads
 Sleep mapStartDelayMs
@@ -213,13 +199,9 @@ SoundBeep 1500, 150
 Sleep 100
 SoundBeep 2000, 150
 Send startHotkeyToSend
-Log("Sent capture hotkey")
 
 ; 7) Wait then quit CS2
 ; --- 6) Wait N seconds, then quit CS2 ---
 Sleep benchmarkDurationMs
 ; The console will re-appear at the end; type quit to exit.
 TypeInConsole("quit")
-Log("Sent quit command")
-
-Log("Script completed successfully")
