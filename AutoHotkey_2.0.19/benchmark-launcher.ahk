@@ -1,17 +1,18 @@
 ; =================================================================
 ; CS2 Benchmark Launcher — Professional Edition (AutoHotkey v2)
-; Watches for the final window "CS2 Benchmark Automation", then re-detects.
+; No setup required. Optional helper to copy cs2_video settings.
 ; CPU/GPU (VRAM only), polished UI, NVIDIA green GPU lines.
+; (consoleKey logic removed)
 ; =================================================================
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-SetTitleMatchMode 2   ; 2 = substring match (robust for window title changes)
+SetTitleMatchMode 2   ; substring match
 
 ; ---------- App Config ----------
 AppName        := "CS2 Benchmark Launcher"
-Version        := "1.9"
-IniPath        := A_ScriptDir "\launcher_settings.ini"
-SetupPath      := A_ScriptDir "\Setup_first.bat"      ; your setup launcher (.bat/.cmd/.exe/.ahk)
+Version        := "2.1.1"
+IniPath        := A_ScriptDir "\launcher_settings.ini"   ; kept for future use if needed
+CopyVideoPath  := A_ScriptDir "\Setup_first.bat"         ; optional helper (copies cs2_video etc.)
 BenchPath      := A_ScriptDir "\Run_Benchmark.bat"
 RunnerAhk      := A_ScriptDir "\AutoHotkey64.ahk"
 
@@ -35,30 +36,14 @@ Quote(s) {
     return '"' s '"'
 }
 
-IniReadStr(section, key, default:="") {
-    try {
-        return IniRead(IniPath, section, key, default)
-    } catch {
-        return default
-    }
-}
-
-IniWriteStr(section, key, value) {
-    try {
-        IniWrite(value, IniPath, section, key)
-    } catch {
-        ; ignore write errors
-    }
-}
-
 ReadVarFromAhk(filePath, varName) {
     if !FileExist(filePath)
         return ""
     txt := FileRead(filePath, "UTF-8")
-    q := Chr(34)
-    pat := "m)^\s*" varName "\s*:=\s*" q "([^" q "]*)" q
+    ; Accept " or ' and flexible whitespace
+    pat := "m)^\s*" varName "\s*:=\s*(['" Chr(34) "])(.+?)\1"
     if RegExMatch(txt, pat, &m)
-        return m[1]
+        return m[2]
     return ""
 }
 
@@ -68,17 +53,17 @@ BuildCfgPath(steamUserId) {
     return UserdataRootPreferred steamUserId "\" AppId "\local\cfg"
 }
 
-TrimSpaces(s) {
-    return Trim(RegExReplace(s, "\s+", " "))
-}
+TrimSpaces(s) => Trim(RegExReplace(s, "\s+", " "))
 
 ; ---------- Hardware Detection ----------
 GetCPUName() {
+    static wmi := ComObjGet("winmgmts:")
     try {
-        for p in ComObjGet("winmgmts:").ExecQuery("SELECT Name FROM Win32_Processor") {
+        for p in wmi.ExecQuery("SELECT Name FROM Win32_Processor") {
             return TrimSpaces(p.Name)
         }
     } catch {
+        ; ignore
     }
     return ""
 }
@@ -86,15 +71,22 @@ GetCPUName() {
 FormatVRAM(bytes) {
     if (bytes = "" || bytes <= 0)
         return ""
-    return Round(bytes / (1024**3), 1) " GB"
+    v := ""
+    try {
+        v := Round(bytes / (1024**3), 1)
+    } catch as e {
+        v := ""
+    }
+    return (v != "" ? v " GB" : "")
 }
 
 ; Return array of objects: [{rawName,isNvidia,display}]
 GetGPUInfos() {
+    static wmi := ComObjGet("winmgmts:")
     infos := []
     seen := Map()
     try {
-        for vc in ComObjGet("winmgmts:").ExecQuery("SELECT Name, AdapterRAM FROM Win32_VideoController") {
+        for vc in wmi.ExecQuery("SELECT Name, AdapterRAM FROM Win32_VideoController") {
             name := TrimSpaces(vc.Name)
             if (name = "") || RegExMatch(name, "(?i)microsoft basic display")
                 continue
@@ -109,6 +101,7 @@ GetGPUInfos() {
             infos.Push({ rawName: name, isNvidia: !!isNv, display: disp })
         }
     } catch {
+        ; ignore
     }
     return infos
 }
@@ -118,28 +111,16 @@ AddLog(msg) {
     global tbLog
     t := FormatTime(, "HH:mm:ss")
     tbLog.Value .= t "  " msg "`r`n"
+    ; keep tail to avoid huge control
+    if StrLen(tbLog.Value) > 200000
+        tbLog.Value := SubStr(tbLog.Value, -150000)
     end := StrLen(tbLog.Value)
-    ; EM_SETSEL / EM_SCROLLCARET
     DllCall("user32\SendMessage", "ptr", tbLog.Hwnd, "uint", 0x00B1, "ptr", end, "ptr", end)
     DllCall("user32\SendMessage", "ptr", tbLog.Hwnd, "uint", 0x00B7, "ptr", 0,   "ptr", 0)
 }
 
-; ---------- Window watcher ----------
-; Wait for a window to APPEAR (even briefly). Robust for fast-open/close flows.
-WaitForWindowAppear(title, timeoutMs := 120000) {
-    start := A_TickCount
-    while (A_TickCount - start < timeoutMs) {
-        if WinExist(title)
-            return true
-        if WinWait(title, , 0.2)  ; 0.2s slices to catch blink-fast windows
-            return true
-        Sleep 100
-    }
-    return false
-}
-
-; Start setup (non-blocking), then watch for the final window to appear.
-StartSetupAndWatchFinalWindow(launcherPath, finalWindowTitle := "CS2 Benchmark Automation") {
+; ---------- Optional: quick runner ----------
+RunNonBlocking(launcherPath) {
     if !FileExist(launcherPath) {
         MsgBox "File not found:`n" launcherPath, "Error", "Iconx"
         AddLog("❌ Missing: " launcherPath)
@@ -150,20 +131,15 @@ StartSetupAndWatchFinalWindow(launcherPath, finalWindowTitle := "CS2 Benchmark A
     try {
         AddLog("▶ Launching " name " …")
         if (ext = "ahk") {
-            Run(Quote(A_AhkPath) " " Quote(launcherPath))                 ; non-blocking
+            Run(Quote(A_AhkPath) " " Quote(launcherPath))
         } else if (ext = "bat" || ext = "cmd") {
-            Run(Quote(A_ComSpec) " /c " . Quote(launcherPath))            ; non-blocking
+            Run(Quote(A_ComSpec) " /c " . Quote(launcherPath))
         } else if (ext = "exe") {
-            Run(Quote(launcherPath))                                      ; non-blocking
+            Run(Quote(launcherPath))
         } else {
-            Run(Quote(A_ComSpec) " /c " . Quote(launcherPath))            ; non-blocking
+            Run(Quote(A_ComSpec) " /c " . Quote(launcherPath))
         }
-        AddLog("… watching for final window: " finalWindowTitle)
-        if WaitForWindowAppear(finalWindowTitle, 120000) {
-            AddLog("✅ Detected: " finalWindowTitle)
-        } else {
-            AddLog("⚠️  Did not see '" finalWindowTitle "' within 120s (continuing).")
-        }
+        AddLog("✅ Launched: " name)
         return true
     } catch as e {
         MsgBox "Failed to run:`n" launcherPath "`n`n" e.Message, "Error", "Iconx"
@@ -172,28 +148,38 @@ StartSetupAndWatchFinalWindow(launcherPath, finalWindowTitle := "CS2 Benchmark A
     }
 }
 
-; ---------- Persistent State ----------
-SetupDone := (IniReadStr("state", "setup_done", "0") = "1")
-SetupTime :=  IniReadStr("state", "setup_time", "")
+SmoothClose(gui, durationMs := 200) {
+    steps := 12
+    stepMs := Max(10, Round(durationMs / steps))
+    loop steps + 1 {
+        alpha := 255 - Round(255 * (A_Index - 1) / steps)
+        WinSetTransparent alpha, "ahk_id " gui.Hwnd
+        Sleep stepMs
+    }
+    try {
+        gui.Destroy()
+    } catch {
+        ; ignore
+    }
+}
 
 ; ---------- Initial Detected Settings ----------
 DetectedSteamId := ReadVarFromAhk(RunnerAhk, "steamUserId")
-DetectedConsole := ReadVarFromAhk(RunnerAhk, "consoleKey")
 DetectedCfgPath := BuildCfgPath(DetectedSteamId)
 
 ShownSteamId := (DetectedSteamId != "" ? DetectedSteamId : "<not set>")
-ShownConsole := (DetectedConsole != "" ? DetectedConsole : "<not set>")
 ShownCfgPath := (DetectedCfgPath != "" ? DetectedCfgPath : "<cannot compute – steamUserId missing>")
 
 ; ---------- Hardware Info ----------
-CPUText   := (GetCPUName() != "" ? GetCPUName() : "<not detected>")
+CPUText := (GetCPUName() != "" ? GetCPUName() : "<not detected>")
 
 ; ---------- GUI ----------
 global g, ribbon, statusLbl, tbLog
-global lblSteam, lblCfg, lblConsole, lblCPU
-global gpuLineCtrls := []  ; dynamic GPU lines
+global lblSteam, lblCfg, lblCPU
+global gpuLineCtrls := []
+global btnCopyVideo, btnBench  ; buttons used across funcs
 
-g := Gui("+AlwaysOnTop +MinSize900x700", AppName)
+g := Gui("+AlwaysOnTop +MinSize900x700 +OwnDialogs", AppName)
 g.BackColor := Theme["bg"]
 g.MarginX := 16, g.MarginY := 12
 g.SetFont("s10", "Segoe UI")
@@ -205,16 +191,18 @@ g.AddText("xm ym w860", "CS2 Benchmark Launcher")
 g.SetFont("s9", "Segoe UI")
 g.AddText("x+8 yp+4 c" Theme["muted"], "v" Version)
 
-; Status Ribbon
+; Status Ribbon (informational)
 g.AddText("xm y+6 w860 h4 Background" Theme["accent"])
-ribbon := g.AddText("xm y+8 w860 cFFFFFF Background" Theme["warn"] " +Border Center", "Please run 'Setup First' before running the benchmark.")
+ribbon := g.AddText("xm y+8 w860 cFFFFFF Background" Theme["ok"] " +Border Center"
+    , "No setup required — you can run the benchmark anytime.")
 
-; Status line
-statusLbl := g.AddText("xm y+6 w860 c" Theme["fg"], "")
+; Status line (simple reminder about the optional helper)
+statusLbl := g.AddText("xm y+6 w860 c" Theme["fg"]
+    , "Optional: use 'cs2_video Setup' if you want the launcher to copy video settings automatically.")
 
 ; Settings Card
-card := g.AddGroupBox("xm y+10 w860 h360", "Detected Settings")
-bgCard := g.AddText("xp+8 yp+18 w844 h328 Background" Theme["card"])
+card := g.AddGroupBox("xm y+10 w860 h330", "Detected Settings")
+bgCard := g.AddText("xp+8 yp+18 w844 h298 Background" Theme["card"])
 bgCard.Enabled := false
 
 g.SetFont("s9", "Segoe UI")
@@ -224,15 +212,11 @@ lblSteam := g.AddText("x+0 w650 +Wrap", ShownSteamId)
 g.AddText("xm+20 y+10 w180 c" Theme["muted"], "CS2 cfg folder:")
 lblCfg := g.AddText("x+0 w650 +Wrap", ShownCfgPath)
 
-g.AddText("xm+20 y+10 w180 c" Theme["muted"], "Console Key:")
-lblConsole := g.AddText("x+0 w650 +Wrap", ShownConsole)
-
 g.AddText("xm+20 y+10 w180 c" Theme["muted"], "CPU:")
 lblCPU := g.AddText("x+0 w650 +Wrap", CPUText)
 
 capGPU := g.AddText("xm+20 y+10 w180 c" Theme["muted"], "GPU(s):")
 
-; -------- SINGLE definition: RenderGPUList (safe) --------
 RenderGPUList() {
     global g, gpuLineCtrls, capGPU, Theme
     arr := GetGPUInfos()
@@ -240,7 +224,10 @@ RenderGPUList() {
         arr := []
 
     for c in gpuLineCtrls {
-        try c.Destroy()
+        try {
+            c.Destroy()
+        } catch {
+        }
     }
     gpuLineCtrls := []
 
@@ -264,21 +251,23 @@ RenderGPUList() {
 
 g.SetFont("s10", "Segoe UI")
 
-; Actions Card
-act := g.AddGroupBox("xm y+12 w860 h86", "Actions")
-bgAct := g.AddText("xp+8 yp+18 w844 h54 Background" Theme["card"])
+; Actions Card — benchmark is prominent & default
+act := g.AddGroupBox("xm y+12 w860 h120", "Actions")
+bgAct := g.AddText("xp+8 yp+18 w844 h88 Background" Theme["card"])
 bgAct.Enabled := false
 
-btnSetup := g.AddButton("xm+28 yp+10 w300 h40", "🛠  &Run Setup First")
-btnBench := g.AddButton("x+20 w300 h40 Default", "▶  Run CS2 Benchmark")
-btnSetup.ToolTip := "Run preparation steps (recommended first)."
-btnBench.ToolTip := "Start the benchmark."
+; Make the benchmark button prominent: wider, default, and first
+btnBench := g.AddButton("xm+20 yp+10 w520 h48 Default", "▶  RUN CS2 BENCHMARK")
+btnCopyVideo := g.AddButton("x+20 w280 h48", "🛠 cs2_video folder Setup (optional)")
+
+btnBench.ToolTip := "Start the benchmark immediately (no setup needed)."
+btnCopyVideo.ToolTip := "Optional helper to copy cs2_video settings automatically."
 
 ; Log
 g.SetFont("s9", "Segoe UI")
 g.AddText("xm y+14 c" Theme["muted"], "Activity:")
 tbLog := g.AddEdit("xm w860 r12 ReadOnly -Wrap +VScroll")
-AddLog("Launcher ready")
+AddLog("Launcher ready (no setup required).")
 
 ; Footer
 g.SetFont("s10", "Segoe UI")
@@ -286,66 +275,30 @@ btnExit := g.AddButton("xm y+10 w100", "Close")
 btnExit.OnEvent("Click", (*) => g.Destroy())
 
 ; ---------- Behavior ----------
-UpdateStatus() {
-    global SetupDone, SetupTime, ribbon, statusLbl, Theme
-    if SetupDone {
-        statusLbl.Text := (SetupTime != "" ? "Setup status: DONE (" SetupTime ")" : "Setup status: DONE")
-        ribbon.Text := "Setup completed — you can run the benchmark."
-        ribbon.Opt("Background" Theme["ok"])
-    } else {
-        statusLbl.Text := "Setup status: NOT DONE"
-        ribbon.Text := "Please run 'Setup First' before running the benchmark."
-        ribbon.Opt("Background" Theme["warn"])
-    }
-}
-
 RefreshDetected() {
-    global RunnerAhk, lblSteam, lblConsole, lblCfg
+    global RunnerAhk, lblSteam, lblCfg
     DetectedSteamId := ReadVarFromAhk(RunnerAhk, "steamUserId")
-    DetectedConsole := ReadVarFromAhk(RunnerAhk, "consoleKey")
     DetectedCfgPath := BuildCfgPath(DetectedSteamId)
     lblSteam.Text   := (DetectedSteamId != "" ? DetectedSteamId : "<not set>")
-    lblConsole.Text := (DetectedConsole != "" ? DetectedConsole : "<not set>")
     lblCfg.Text     := (DetectedCfgPath != "" ? DetectedCfgPath : "<cannot compute – steamUserId missing>")
 }
 
-RunSetup() {
-    AddLog("▶ Running Setup First…")
-    if StartSetupAndWatchFinalWindow(SetupPath, "CS2 Benchmark Automation") {
-        global SetupDone, SetupTime
-        SetupDone := true
-        SetupTime := FormatTime(, "yyyy-MM-dd HH:mm:ss")
-        IniWriteStr("state", "setup_done", "1")
-        IniWriteStr("state", "setup_time", SetupTime)
-
-        ; Re-detect as soon as the final window is seen (it may close fast)
-        AddLog("🔎 Re-detecting settings after final window appeared…")
-        RefreshDetected()
-        sid := ReadVarFromAhk(RunnerAhk, "steamUserId")
-        cky := ReadVarFromAhk(RunnerAhk, "consoleKey")
-        cfg := BuildCfgPath(sid)
-        AddLog("• steamUserId: " . (sid != "" ? sid : "<not set>"))
-        AddLog("• consoleKey: " . (cky != "" ? cky : "<not set>"))
-        AddLog("• cfg folder: " . (cfg != "" ? cfg : "<cannot compute – steamUserId missing>"))
-
-        UpdateStatus()
-        RenderGPUList()  ; optional refresh
+RunCopyVideo() {
+    global btnCopyVideo, btnBench
+    btnCopyVideo.Enabled := false, btnBench.Enabled := false
+    try {
+        AddLog("▶ Optional: copying cs2 settings…")
+        if RunNonBlocking(CopyVideoPath) {
+            AddLog("ℹ️  The helper runs in the background. You can run the benchmark anytime.")
+            RefreshDetected()
+        }
+    } finally {
+        btnCopyVideo.Enabled := true, btnBench.Enabled := true
     }
 }
-SmoothClose(gui, durationMs := 200) {
-    ; fade from opaque (255) to 0
-    steps := 12
-    stepMs := Max(10, Round(durationMs / steps))
-    loop steps + 1 {
-        alpha := 255 - Round(255 * (A_Index - 1) / steps)
-        WinSetTransparent alpha, "ahk_id " gui.Hwnd
-        Sleep stepMs
-    }
-    try gui.Destroy()
-}
+
 RunBenchmark() {
-    if !SetupDone
-        AddLog("ℹ️  Tip: run 'Setup First' at least once.")
+    global btnCopyVideo, btnBench, BenchPath
     AddLog("▶ Running Benchmark…")
 
     if !FileExist(BenchPath) {
@@ -355,7 +308,7 @@ RunBenchmark() {
     }
 
     ; prevent double clicks while we launch
-    btnSetup.Enabled := false
+    btnCopyVideo.Enabled := false
     btnBench.Enabled := false
 
     SplitPath BenchPath, &name, , &ext
@@ -371,21 +324,19 @@ RunBenchmark() {
             Run('"' A_ComSpec '" /c "' BenchPath '"')
 
         AddLog("✅ Launched: " name)
-        SmoothClose(g, 220)   ; <- nice fade-out then close
+        SmoothClose(g, 220)   ; nice fade-out then close
     } catch as e {
         MsgBox "Failed to run:`n" BenchPath "`n`n" e.Message, "Error", "Iconx"
         AddLog("❌ Failed: " name " — " e.Message)
-        ; re-enable on failure
-        btnSetup.Enabled := true
+        btnCopyVideo.Enabled := true
         btnBench.Enabled := true
     }
 }
 
-btnSetup.OnEvent("Click", (*) => RunSetup())
+btnCopyVideo.OnEvent("Click", (*) => RunCopyVideo())
 btnBench.OnEvent("Click", (*) => RunBenchmark())
 
 ; ---------- Init ----------
-UpdateStatus()
 RenderGPUList()
 g.Show("w900 h720")
 return
