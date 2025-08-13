@@ -2,6 +2,7 @@
 
 Run **professional-grade CS2 benchmarks** with **true 1% lows** and precise CPU/GPU usage metrics — all in just **one click**.
 
+- No more Setup needed!
 Download here -> https://github.com/Ark0N/-CS2-Benchmark-Automation/archive/refs/heads/main.zip
 
 This project bundles **CapFrameX** and **AutoHotkey** into a single, ready-to-run package.
