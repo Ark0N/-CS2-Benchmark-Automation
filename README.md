@@ -6,7 +6,8 @@ Download here -> https://github.com/Ark0N/-CS2-Benchmark-Automation/archive/refs
 
 This project bundles **CapFrameX** and **AutoHotkey** into a single, ready-to-run package.
 
-<img width="895" height="532" alt="image" src="https://github.com/user-attachments/assets/0beea05f-334c-467b-a552-138e9d71fe11" />
+<img width="892" height="727" alt="image" src="https://github.com/user-attachments/assets/bb36c528-4e33-41a2-87bf-4ad2c8754ec6" />
+
 
 ## 🚀 Why This Tool?
 
