@@ -11,7 +11,7 @@
 capframexExe := A_ScriptDir "\CapFrameX_beta1.7.6.portable\Start_CapFrameX.bat"
 steamExe := ResolveSteamExe()
 workshopId   := "3240880604"
-steamUserId := "1337"
+steamUserId := "312103617"
 ; only needed to copy files there like cs2 video settings
 
 cs2WindowWaitSeconds := 120
@@ -155,6 +155,8 @@ if !FileExist(sourceVideo) {
 
 }
 
+
+
 ; --- CapFrameX: close if already running, then launch fresh ---
 if !FileExist(capframexExe)
     ErrBox("CapFrameX not found at:`n" capframexExe)
@@ -178,7 +180,7 @@ Sleep 1200
 ; 3) Launch CS2
 if !FileExist(steamExe)
     ErrBox("Steam not found at:`n" steamExe)
-Run('"' steamExe '" -applaunch 730 +con_enable 1')
+Run('"' steamExe '" -applaunch 730 +con_enable 1 -console +toggleconsole')
 
 ; 4) Wait for CS2 window & settle
 if !WinWait("Counter-Strike 2", , cs2WindowWaitSeconds) {
