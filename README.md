@@ -48,10 +48,10 @@ With CapFrameX handling the metrics, you get **real, trustworthy numbers** — n
 
 3. In Steam Settings disable "Ask which account to use each time Steam start"
 
-4. **Run `GUI-Lauincher.bat`** — it will configure everything in one go
+4. **Run `GUI-Launcher.bat`** or `Run_Benchmark.bat` to directly start the automated CS2 Benchmark with CapframeX 
 <img width="960" height="745" alt="image" src="https://github.com/user-attachments/assets/d5a47559-b9e3-4ce9-bb25-64f420bb37e2" />
 
-   The "CS2 Video Setup"  allows you to select the Steam account.
+   The "CS2 Video Setup"  allows you to select the Steam account if needed. 
 
    Please ensure that the CS2 Dust2 Benchmark Workshop map is subscribed to on the selected account.
 
