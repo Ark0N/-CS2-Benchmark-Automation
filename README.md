@@ -112,7 +112,6 @@ You can edit the `.ahk` files to change:
 cs2WindowWaitSeconds := 120     ; Max wait for CS2 to open
 mapStartDelayMs      := 6000    ; Delay before starting capture
 benchmarkDurationMs  := 125000  ; Duration before quitting CS2
-consoleKey := "{F10}"
 ```
 
 A CapFrameX Benchmark of the CS2 Dust2 Workshop Map
