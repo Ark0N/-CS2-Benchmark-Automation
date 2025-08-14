@@ -5,6 +5,9 @@ Run **professional-grade CS2 benchmarks** with **true 1% lows** and precise CPU/
 - No more Setup needed!
 Download here -> https://github.com/Ark0N/-CS2-Benchmark-Automation/archive/refs/heads/main.zip
 
+Install the - CS2 FPS Benchmark Workshop Map:
+Download Here (must be subscribed)
+
 This project bundles **CapFrameX** and **AutoHotkey** into a single, ready-to-run package.
 
 <img width="960" height="745" alt="image" src="https://github.com/user-attachments/assets/1e8adc49-d1c3-48dd-89e7-c3ef93e4f3a5" />
