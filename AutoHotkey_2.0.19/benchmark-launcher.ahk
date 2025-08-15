@@ -12,7 +12,7 @@ SetTitleMatchMode 2   ; substring match
 AppName        := "CS2 Benchmark Launcher"
 Version        := "2.1.1"
 IniPath        := A_ScriptDir "\launcher_settings.ini"   ; kept for future use if needed
-CopyVideoPath  := A_ScriptDir "\Setup_first.bat"         ; optional helper (copies cs2_video etc.)
+CopyVideoPath  := A_ScriptDir "\Setup_optional.bat"         ; optional helper (copies cs2_video etc.)
 BenchPath      := A_ScriptDir "\Run_Benchmark.bat"
 RunnerAhk      := A_ScriptDir "\AutoHotkey64.ahk"
 
@@ -340,3 +340,4 @@ btnBench.OnEvent("Click", (*) => RunBenchmark())
 RenderGPUList()
 g.Show("w900 h720")
 return
+
