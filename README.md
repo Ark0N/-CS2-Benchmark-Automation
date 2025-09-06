@@ -13,7 +13,7 @@ From the Desciption: Impacted applications
 Some gaming and hardware monitoring applications may be affected, including tools like CapFrameX
 https://support.microsoft.com/en-us/windows/microsoft-defender-antivirus-alert-vulnerabledriver-winnt-winring0-eb057830-d77b-41a2-9a34-015a5d203c42
 
-- 
+
 Install the - **CS2 FPS Benchmark Workshop Map**:  
    [Download Here](https://steamcommunity.com/sharedfiles/filedetails/?id=3240880604) (must be subscribed)
 
